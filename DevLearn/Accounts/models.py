@@ -5,32 +5,26 @@ from django.db import models
 
 
 class AccountManager(BaseUserManager):
-    def _create_user(self, phone, password=None, **extra_fields):
-        if not phone:
-            raise ValueError(_("The given phone must be set!"))
-        user = self.model(phone=phone, **extra_fields)
-        user.set_password(password)
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError("Username must be set")
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)  # پسورد را هش می‌کند
+        user.date_joined = timezone.now()
         user.save(using=self._db)
         return user
 
-    def create_user(self, phone, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
-        extra_fields.setdefault('role', 'student')  # Default role as 'user'
-        return self._create_user(phone, password=None, **extra_fields)
-
-    def create_superuser(self, phone, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('role', 'admin')  # Set role to 'admin' for superuser
+        extra_fields.setdefault('role', 'admin')
 
         if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
+            raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+            raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(phone, password, **extra_fields)
-
+        return self.create_user(username, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
@@ -40,9 +34,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     phone_regex = RegexValidator(regex=r'^09\d{9}$', message="Phone must be entered in the format: 09xxxxxxxxx")
-    phone = models.CharField(validators=[phone_regex], max_length=11, unique=True)
+    phone = models.CharField(validators=[phone_regex], max_length=11)
+    username = models.CharField(max_length=100, unique=True, verbose_name="username")
+    password = models.CharField(max_length=100, verbose_name="password")
 
     full_name = models.CharField(max_length=100, blank=True)
+
     email = models.EmailField(blank=True, null=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
 
@@ -60,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = AccountManager()
 
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
     def __str__(self):
