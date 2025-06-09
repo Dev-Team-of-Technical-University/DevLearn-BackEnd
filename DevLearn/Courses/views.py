@@ -1,7 +1,9 @@
 # courses/views.py
-from rest_framework import viewsets, permissions, filters
+from urllib.parse import urlparse
+import requests
+from rest_framework import viewsets, permissions, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.response import Response
 from Accounts.models import User
 from .models import Category, Tag, Course, Lesson
 from .serializers import CategorySerializer, TagSerializer, CourseSerializer, LessonSerializer
@@ -20,7 +22,7 @@ class CourseFilter(django_filters.FilterSet):
 
     class Meta:
         model = Course
-        fields = ['price_gte', 'price_lte', 'is_published', 'category', 'tags', 'teacher']
+        fields = ['price_gte','price_lte', 'is_published', 'category', 'tags', 'teacher']
 
 
 class LessonFilter(django_filters.FilterSet):
@@ -53,12 +55,47 @@ class LessonViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = LessonFilter
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # استخراج مسیر از video_url (مثلاً "/videos/myvideo.mp4")
+        remote_path = self.extract_remote_path(instance.video_url)
+        fastapi_url = "http://localhost:8000/delete"
+
+        # درخواست حذف از FastAPI
+        try:
+            response = requests.delete(fastapi_url, json={"remote_path": remote_path})
+            if response.status_code not in [200, 404]:
+                return Response({"error": "Failed to delete video from Nextcloud."}, status=500)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+        # حذف رکورد از دیتابیس
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def extract_remote_path(self, video_url):
+        """
+        Example:
+        input: http://192.168.1.33:8080/remote.php/dav/files/Meysam08/videos/myvideo.mp4
+        output: /videos/myvideo.mp4
+        """
+        if not video_url:
+            return ""
+        parsed = urlparse(video_url)
+        path = parsed.path
+        # حذف بخش ثابت مسیر nextcloud تا به مسیر relative برسیم
+        parts = path.split("/files/Meysam08/")
+        return f"/{parts[1]}" if len(parts) > 1 else ""
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # فقط کاربران لاگین شده می‌توانند دسته‌بندی‌ها را ویرایش کنند
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]  # فقط کاربران لاگین شده می‌توانند دسته‌بندی‌ها را ویرایش کنند
     search_fields = ['title']
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()

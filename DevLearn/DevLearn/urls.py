@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,7 +28,8 @@ urlpatterns = [
     path('api/courses', include('Courses.urls')),
     path('api/enroll', include('Enrollments.urls')),
     path('api/payments', include('Payments.urls')),
-
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('salar/api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='schema-ui'),
 ]
 
 urlpatterns += [
