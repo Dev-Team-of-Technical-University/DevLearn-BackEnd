@@ -16,9 +16,31 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    video = serializers.FileField(write_only=True, required=True)  # فقط برای دریافت
     class Meta:
         model = Lesson
-        fields = ['id', 'course', 'title', 'video', 'order', 'duration']
+        fields = ['id', 'course', 'title', 'order', 'duration', 'video_url', 'video']
+
+    def create(self, validated_data):
+        file = validated_data.pop('video')
+        filename = file.name
+        video_url = self.upload_to_nextcloud(file, filename)
+        lesson = Lesson.objects.create(video_url=video_url, **validated_data)
+        return lesson
+
+    def upload_to_nextcloud(self, file_obj, filename):
+        import requests
+
+        url = "http://localhost:8000/upload-file"  # آدرس FastAPI شما
+        files = {'file': (filename, file_obj.read())}
+        data = {'remote_path': f"/videos/{filename}"}
+
+        response = requests.post(url, data=data, files=files)
+        if response.status_code == 200:
+            nextcloud_base_url = "http://192.168.1.33:8080/remote.php/dav/files/Meysam08/videos/"
+            return nextcloud_base_url + filename
+        else:
+            raise serializers.ValidationError(f"Video upload failed: {response.text}")
 
 
 

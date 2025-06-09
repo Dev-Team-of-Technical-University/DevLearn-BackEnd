@@ -31,7 +31,7 @@ class Course(models.Model):
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
-    video = models.FileField(upload_to='courses/videos/')
+    video_url = models.URLField(blank=True, null=True)
     order = models.PositiveSmallIntegerField()
     duration = models.PositiveIntegerField(help_text='Duration in seconds')
 

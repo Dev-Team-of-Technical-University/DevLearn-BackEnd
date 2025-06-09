@@ -19,7 +19,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = CommentFilter
+    filterset_class = CommentFilter
     search_fields = ['content', 'course__title', 'user__username']  # جستجو در متن کامنت، عنوان دوره، یا شماره کاربر
 
     def perform_create(self, serializer):
