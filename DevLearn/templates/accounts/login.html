@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Coderclas</title>
+    <link rel="stylesheet" href="{% static 'styles/universal.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/navbar.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/footer.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/colors.css' %}"/>
+</head>
+<body class="dark">
+
+<div class="login-section">
+    <!-- <img class="logo" src="../../images/logo.webp" alt="Coderclas Logo"> -->
+    <p style="font-size: 50px;">کدینو</p>
+    <div class="login-box">
+        <p class="login-title">ورود</p>
+        <!-- <p class="login-subtitle"></p> -->
+        <form method="POST" class="form" >
+            {% csrf_token %}
+            <label for="username">نام کاربری</label>
+            {{form.username}}
+
+            <label for="password">رمز عبور</label>
+            {{form.password}}
+            <a class="forget" href="{% url 'forget-password' %}">فراموشی رمز عبور </a>
+            <a class="forget" href="{% url 'register' %}">ثبت نام </a>
+
+            <input id="submit" type="submit" value="ورود">
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'script.js' %}"></script>
+</body>
+</html>

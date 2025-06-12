@@ -1,0 +1,75 @@
+{% load static %}
+
+<header>
+    <nav style="position: fixed; top: 0; width: 100%;">
+        <div class="nav-bar">
+            <li class="logo">
+                <a href="{% url 'home_page' %}">
+                    <!-- <img
+                      id="topLogo"
+                      src=""
+                      alt=" Main Logo" /> -->
+                    <p style="font-size: 30px;">کدینو</p>
+                </a>
+            </li>
+
+            <div style="display: flex;">
+                <div class="wrapper">
+                    <input type="checkbox" id="hide_checkbox" checked>
+                    <label for="hide_checkbox" class="toggle">
+                <span class="toggle-button">
+                  <span class="crater crater-1"></span>
+                  <span class="crater crater-2"></span>
+                  <span class="crater crater-3"></span>   
+                  <span class="crater crater-4"></span>
+                  <span class="crater crater-5"></span>
+                  <span class="crater crater-6"></span>
+                  <span class="crater crater-7"></span>
+                </span>
+                        <span class="star star-1"></span>
+                        <span class="star star-2"></span>
+                        <span class="star star-3"></span>
+                        <span class="star star-4"></span>
+                        <span class="star star-5"></span>
+                        <span class="star star-6"></span>
+                        <span class="star star-7"></span>
+                        <span class="star star-8"></span>
+                    </label>
+                </div>
+
+
+                <input type="checkbox" id="check"/>
+                <span class="menu font-sans">
+            <li>
+              <a class="text-white text-center" href="#courses">دوره ها</a>
+            </li>
+            <li><a class="text-white text-center" href="{% url 'contact-us' %}">ارتباط با ما</a></li>
+            <li>
+              <a class="text-white text-center" href="{% url 'about-us' %}">درباره ما</a>
+            </li>
+                    {% if user.is_authenticated %}
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512"
+                             style="width: 2em; height: 2em;fill: currentColor;overflow: hidden; font-size: 20px"
+                             xmlns="http://www.w3.org/2000/svg">
+                        <path d="M416 448h-84c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h84c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32h-84c-6.6 0-12-5.4-12-12V76c0-6.6 5.4-12 12-12h84c53 0 96 43 96 96v192c0 53-43 96-96 96zm-47-201L201 79c-15-15-41-4.5-41 17v96H24c-13.3 0-24 10.7-24 24v96c0 13.3 10.7 24 24 24h136v96c0 21.5 26 32 41 17l168-168c9.3-9.4 9.3-24.6 0-34z"></path>
+                    </svg>
+                        <a class="mainlogi" href="{% url 'logout' %}">خروج</a>
+                    {% else %}
+                        <li>
+              <a href="{% url 'login' %}">
+              <button class="btn-design text-bold">ورود | ثبت نام</button></a>
+            </li>
+                    {% endif %}
+                    <label for="check" class="close-menu">
+              <i class="text-white fas fa-times"></i>
+            </label>
+          </span>
+
+            </div>
+
+            <label for="check" class="open-menu">
+                <i class="text-white fas fa-bars"></i>
+            </label>
+        </div>
+    </nav>
+</header>

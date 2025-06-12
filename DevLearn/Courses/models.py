@@ -1,6 +1,7 @@
 from django.db import models
 from Accounts.models import User
 
+
 class Category(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -8,11 +9,13 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
+
 
 class Course(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
@@ -27,6 +30,7 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')

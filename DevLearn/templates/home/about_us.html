@@ -1,0 +1,32 @@
+{% extends 'components/_layout.html' %}
+{% load static %}
+{% block title %}
+    About Us
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'styles/about.css' %}"/>
+{% endblock %}
+{% block content %}
+    <div id="instructor" class="about-us font-sans text-center">
+        <div class="instructor-title">
+            <p class="text-bold title">ملاقات با <span>موسس</span></p>
+        </div>
+        <div class="line-long"></div>
+        <div class="instructor-content">
+            <div class="image-div">
+                <img src="{% static 'images/taha1.jpg'%}" alt="طاها لطفی" style="border-radius: 50%;"/>
+            </div>
+            <div class="name-div">
+                <p class="name text-bold">طاها لطفی</p>
+                <p class="designation text-bold">موسس, کدینو</p>
+            </div>
+        </div>
+        <div class="description-div">
+            <p class="description">
+                ملاقات با <span><i>طاها لطفی</i></span
+            >,فردی پویا که با کنجکاوی سیری‌ناپذیر خود، دنیای همواره در حال تکامل فناوری را کشف می‌کند.
+                مانیش با اشتیاق به کدنویسی و عشق عمیق به تدریس، به عنوان یک کدنویس ماهر و یک مربی فداکار شناخته می‌شود.
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Payments',
     'Comments',
     'Questions',
+    'Web',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -55,6 +56,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'Accounts.User'
+LOGIN_URL = '/login/'
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -187,6 +190,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # یا سرویس دیگر
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'swlrx08@gmail.com'
-EMAIL_HOST_PASSWORD = 'Salar1381*#'  # یا رمز اپلیکیشن برای Gmail
+EMAIL_HOST_USER = 'salarsaraei08@gmail.com'
+EMAIL_HOST_PASSWORD = 'unor ekvm okbe toyn'  # یا رمز اپلیکیشن برای Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+

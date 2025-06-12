@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Coderclas</title>
+    <link rel="stylesheet" href="{% static 'styles/universal.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/navbar.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/footer.css' %}"/>
+    <link rel="stylesheet" href="{% static 'styles/colors.css' %}"/>
+</head>
+<body class="dark">
+
+<div class="login-section">
+    <p style="font-size: 50px;">کدینو</p>
+    <div class="login-box">
+        <p class="login-title">ثبت‌نام</p>
+        <form method="POST" class="form">
+            {% csrf_token %}
+
+            <label for="username">نام کاربری</label>
+            {{ form.username }}
+
+            <label for="password">رمز عبور</label>
+            {{ form.password }}
+
+            <label for="phone">شماره تلفن</label>
+            {{ form.phone }}
+            <label for="phone">ایمیل</label>
+            {{ form.email }}
+
+            <label for="full_name">نام کامل</label>
+            {{ form.full_name }}
+
+            <label for="role">نقش</label>
+            {{ form.role }}
+
+            {% if form.non_field_errors %}
+                <div class="error-text">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="error-text">{{ error }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <input id="submit" type="submit" value="ثبت‌نام">
+        </form>
+
+        <p style="margin-top: 10px;">
+            حساب دارید؟ <a class="forget" href="{% url 'login' %}">وارد شوید</a>
+        </p>
+    </div>
+</div>
+
+<script src="{% static 'script.js' %}"></script>
+</body>
+</html>
